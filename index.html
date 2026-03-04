@@ -10,8 +10,13 @@
 body{
   background:linear-gradient(160deg,#f9f7f4 0%,#f0ece5 40%,#e8e2d8 100%);
   font-family:'Nunito',sans-serif;
-  overflow:hidden;height:100vh;
+  overflow-x:hidden;
+  margin:0;
+}
+.hero{
+  position:relative;width:100%;height:100vh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
 }
 .header{
   position:absolute;top:32px;text-align:center;z-index:10;pointer-events:none;
@@ -29,7 +34,7 @@ body{
   width:60px;height:1px;background:#8faa8b;
   margin:10px auto 0;opacity:.5;
 }
-#c{position:fixed;top:0;left:0;width:100%;height:100%}
+#c{position:absolute;top:0;left:0;width:100%;height:100%}
 canvas{display:block;cursor:grab}
 canvas:active{cursor:grabbing}
 .footer{
@@ -51,19 +56,101 @@ canvas:active{cursor:grabbing}
   15%{opacity:.35}80%{opacity:.1}
   100%{opacity:0;transform:translateY(-250px) scale(1)}
 }
+.characters-section{
+  position:relative;z-index:10;
+  background:linear-gradient(180deg,#e8e2d8 0%,#f5f2ed 8%,#f9f7f4 100%);
+  padding:60px 24px 80px;
+  text-align:center;
+}
+.characters-section h2{
+  font-size:1.5rem;font-weight:300;color:#4a3628;
+  letter-spacing:6px;text-transform:uppercase;margin-bottom:8px;
+}
+.characters-section h2 span{font-weight:800}
+.characters-section .section-sub{
+  font-size:.75rem;color:#8faa8b;font-weight:700;
+  letter-spacing:3px;margin-bottom:40px;
+}
+.characters-section .section-line{
+  width:40px;height:1px;background:#8faa8b;
+  margin:12px auto 36px;opacity:.5;
+}
+.char-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:28px;max-width:1100px;margin:0 auto;
+}
+.char-card{
+  background:#fff;border-radius:16px;
+  padding:20px 16px 18px;
+  box-shadow:0 2px 16px rgba(74,54,40,.07);
+  transition:transform .3s ease,box-shadow .3s ease;
+  cursor:default;
+}
+.char-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 8px 28px rgba(74,54,40,.13);
+}
+.char-card img{
+  width:100%;aspect-ratio:1;object-fit:contain;
+  border-radius:10px;background:#faf8f5;
+}
+.char-card .char-name{
+  margin-top:12px;font-size:.95rem;font-weight:800;
+  color:#4a3628;letter-spacing:1px;
+}
+.char-card .char-desc{
+  margin-top:4px;font-size:.7rem;color:#8faa8b;
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+}
 </style>
 </head>
 <body>
-<div class="header">
-  <h1><span>Capy</span> & <span>Co</span></h1>
-  <div class="sub">MYSTERY SERIES VOL.1</div>
-  <div class="line"></div>
+<div class="hero">
+  <div class="header">
+    <h1><span>Capy</span> & <span>Co</span></h1>
+    <div class="sub">MYSTERY SERIES VOL.1</div>
+    <div class="line"></div>
+  </div>
+  <div id="c"></div>
+  <div class="footer">
+    <p>12cm &times; 12cm &times; 12cm &middot; Premium Blind Box</p>
+    <div class="badge">WHICH ONE WILL YOU GET?</div>
+  </div>
 </div>
-<div id="c"></div>
-<div class="footer">
-  <p>12cm &times; 12cm &times; 12cm &middot; Premium Blind Box</p>
-  <div class="badge">WHICH ONE WILL YOU GET?</div>
-</div>
+
+<section class="characters-section">
+  <h2><span>Meet</span> the <span>Capys</span></h2>
+  <div class="section-sub">5 CHARACTERS &middot; 1 MYSTERY</div>
+  <div class="section-line"></div>
+  <div class="char-grid">
+    <div class="char-card">
+      <img src="01_capy_classic.png" alt="Capy Classic">
+      <div class="char-name">Capy Classic 🦫</div>
+      <div class="char-desc">Base Design</div>
+    </div>
+    <div class="char-card">
+      <img src="02_capy_summer.png" alt="Capy Summer">
+      <div class="char-name">Capy Summer 🌊</div>
+      <div class="char-desc">Rubber Duck & Shades</div>
+    </div>
+    <div class="char-card">
+      <img src="03_capy_chef.png" alt="Capy Chef">
+      <div class="char-name">Capy Chef 🍓</div>
+      <div class="char-desc">Chef Hat & Strawberry</div>
+    </div>
+    <div class="char-card">
+      <img src="04_capy_explorer.png" alt="Capy Explorer">
+      <div class="char-name">Capy Explorer 🌿</div>
+      <div class="char-desc">Backpack & Fedora</div>
+    </div>
+    <div class="char-card">
+      <img src="05_capy_angel.png" alt="Capy Angel">
+      <div class="char-name">Capy Angel ✨</div>
+      <div class="char-desc">Halo & Wings</div>
+    </div>
+  </div>
+</section>
 <script>
 for(let i=0;i<12;i++){
   const p=document.createElement('div');p.className='dot';
@@ -72,7 +159,7 @@ for(let i=0;i<12;i++){
   p.style.cssText=`width:${sz}px;height:${sz}px;background:${cols[i%4]};`+
     `left:${Math.random()*100}vw;top:${30+Math.random()*50}vh;`+
     `animation-delay:${Math.random()*8}s;animation-duration:${5+Math.random()*5}s`;
-  document.body.appendChild(p);
+  document.querySelector('.hero').appendChild(p);
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -88,11 +175,12 @@ const T={
 };
 const cont=document.getElementById('c');
 const scene=new THREE.Scene();
-const cam=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,100);
+const heroEl=document.querySelector('.hero');
+const cam=new THREE.PerspectiveCamera(38,heroEl.clientWidth/heroEl.clientHeight,.1,100);
 cam.position.set(0,2.5,6.5);
 cam.lookAt(0,1.15,0);
 const R=new THREE.WebGLRenderer({antialias:true,alpha:false});
-R.setSize(innerWidth,innerHeight);
+R.setSize(heroEl.clientWidth,heroEl.clientHeight);
 R.setPixelRatio(Math.min(devicePixelRatio,2));
 R.shadowMap.enabled=true;
 R.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -151,8 +239,8 @@ Promise.all([lt(T.right),lt(T.left),lt(T.top),lt(T.bottom),lt(T.front),lt(T.back
 });
 
 addEventListener('resize',()=>{
-  cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
-  R.setSize(innerWidth,innerHeight);
+  cam.aspect=heroEl.clientWidth/heroEl.clientHeight;cam.updateProjectionMatrix();
+  R.setSize(heroEl.clientWidth,heroEl.clientHeight);
 });
 let it;
 ctrl.addEventListener('start',()=>{ctrl.autoRotate=false;clearTimeout(it)});
