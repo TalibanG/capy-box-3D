@@ -89,17 +89,20 @@ const T={
 const cont=document.getElementById('c');
 const scene=new THREE.Scene();
 const cam=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,100);
-cam.position.set(3.8,2.6,4.8);
-const R=new THREE.WebGLRenderer({antialias:true,alpha:true});
+cam.position.set(3.8,2.8,4.8);
+cam.lookAt(0,1.15,0);
+const R=new THREE.WebGLRenderer({antialias:true,alpha:false});
 R.setSize(innerWidth,innerHeight);
 R.setPixelRatio(Math.min(devicePixelRatio,2));
 R.shadowMap.enabled=true;
 R.shadowMap.type=THREE.PCFSoftShadowMap;
 R.toneMapping=THREE.ACESFilmicToneMapping;
 R.toneMappingExposure=1.15;
+R.setClearColor(0xf3ede4,1);
 cont.appendChild(R.domElement);
 
 const ctrl=new THREE.OrbitControls(cam,R.domElement);
+ctrl.target.set(0,1.15,0);
 ctrl.enableDamping=true;ctrl.dampingFactor=0.06;
 ctrl.enablePan=false;ctrl.minDistance=3.5;ctrl.maxDistance=9;
 ctrl.maxPolarAngle=Math.PI*.72;ctrl.minPolarAngle=Math.PI*.18;
