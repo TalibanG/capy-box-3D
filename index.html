@@ -70,19 +70,16 @@ body {
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   overflow: hidden;
   background: linear-gradient(160deg, #FDFAF6 0%, #f0ece5 40%, #e8e2d8 100%);
 }
 #hero-3d {
-  position: absolute;
-  top: 0; left: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: 70vh;
 }
 #hero-canvas {
   position: absolute;
@@ -95,10 +92,10 @@ canvas:active { cursor: grabbing; }
 
 .hero-content {
   position: relative;
-  z-index: 10;
   text-align: center;
-  pointer-events: none;
-  margin-top: -80px;
+  padding: 32px 24px 48px;
+  background: linear-gradient(180deg, #e8e2d8 0%, #FDFAF6 100%);
+  width: 100%;
 }
 .hero-content h1 {
   font-size: 3.5rem;
@@ -124,7 +121,6 @@ canvas:active { cursor: grabbing; }
   border-radius: 50px;
   box-shadow: 0 4px 20px rgba(34,197,94,0.3);
   margin-bottom: 16px;
-  pointer-events: auto;
 }
 .cta-btn {
   display: inline-block;
@@ -147,20 +143,17 @@ canvas:active { cursor: grabbing; }
 }
 
 .scroll-hint {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  position: relative;
   color: var(--green);
   font-size: 1.2rem;
   opacity: 0.7;
   animation: bounce 2s ease-in-out infinite;
   cursor: pointer;
+  padding-bottom: 24px;
 }
 @keyframes bounce {
-  0%,100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 /* ===== DOT PARTICLES ===== */
@@ -523,8 +516,7 @@ canvas:active { cursor: grabbing; }
     <h1>CapyBox</h1>
     <div class="subtitle">?&#x2728; איזו קפיברה תקבל</div>
     <div class="price-badge">&#8362;59.90</div>
-    <br><br>
-    <a href="#order" class="cta-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'});return false;">&#128230; הזמינו עכשיו</a>
+    <div style="margin-top:16px;"><a href="#order" class="cta-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'});return false;">&#128230; הזמינו עכשיו</a></div>
   </div>
   <div class="scroll-hint" onclick="document.querySelector('.characters-section').scrollIntoView({behavior:'smooth'})">&#9660; גלו את הדמויות &#9660;</div>
 </section>
@@ -668,7 +660,7 @@ for(let i=0;i<12;i++){
   p.style.cssText=`width:${sz}px;height:${sz}px;background:${cols[i%4]};`+
     `left:${Math.random()*100}vw;top:${30+Math.random()*50}vh;`+
     `animation-delay:${Math.random()*8}s;animation-duration:${5+Math.random()*5}s`;
-  document.querySelector('.hero').appendChild(p);
+  document.getElementById('hero-3d').appendChild(p);
 }
 </script>
 
