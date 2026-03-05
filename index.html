@@ -503,6 +503,17 @@ canvas:active { cursor: grabbing; }
   .cd-num { font-size: 1.4rem; }
   .modal { padding: 24px 16px; }
 }
+
+/* ===== SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
 </head>
 <body>
@@ -791,6 +802,21 @@ addEventListener('resize',()=>{
 let it;
 ctrl.addEventListener('start',()=>{ctrl.autoRotate=false;clearTimeout(it)});
 ctrl.addEventListener('end',()=>{it=setTimeout(()=>ctrl.autoRotate=true,3000)});
+</script>
+
+<script>
+document.querySelectorAll('.characters-section, .how-section, .order-section, .countdown-section, .donation-banner').forEach(function(el) {
+  el.classList.add('reveal');
+});
+var ro = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
 </script>
 
 </body>
