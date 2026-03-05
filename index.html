@@ -484,19 +484,6 @@ canvas:active { cursor: grabbing; }
   margin-bottom: 8px;
 }
 
-/* ===== DONATION BANNER ===== */
-.donation-banner {
-  text-align: center;
-  padding: 12px 24px;
-  background: #f5f0e8;
-  color: var(--brown);
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-top: 1px solid #e8e0d4;
-  border-bottom: 1px solid #e8e0d4;
-}
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   #hero-3d { height: 40vh; }
@@ -532,16 +519,13 @@ canvas:active { cursor: grabbing; }
     <div id="hero-canvas"></div>
   </div>
   <div class="hero-content">
-    <h1>גלו את הקפיברות</h1>
+    <h1>CapyBox</h1>
     <div class="subtitle">?&#x2728; איזו קפיברה תקבל</div>
     <div class="price-badge">&#8362;59.90</div>
     <div style="margin-top:16px;"><a href="#order" class="cta-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'});return false;">&#128230; הזמינו עכשיו</a></div>
   </div>
   <div class="scroll-hint" onclick="document.querySelector('.characters-section').scrollIntoView({behavior:'smooth'})">&#9660; גלו את הדמויות &#9660;</div>
 </section>
-
-<!-- DONATION BANNER -->
-<div class="donation-banner">כל קנייה תורמת 15% לחוות קפיברות 🌿</div>
 
 <!-- CHARACTERS -->
 <section class="characters-section" id="characters">
