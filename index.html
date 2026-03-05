@@ -79,7 +79,7 @@ body {
 #hero-3d {
   position: relative;
   width: 100%;
-  height: 70vh;
+  height: 50vh;
 }
 #hero-canvas {
   position: absolute;
@@ -93,7 +93,7 @@ canvas:active { cursor: grabbing; }
 .hero-content {
   position: relative;
   text-align: center;
-  padding: 32px 24px 48px;
+  padding: 20px 24px 28px;
   background: linear-gradient(180deg, #e8e2d8 0%, #FDFAF6 100%);
   width: 100%;
 }
@@ -109,7 +109,7 @@ canvas:active { cursor: grabbing; }
   font-size: 1.3rem;
   color: var(--text-mid);
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 .price-badge {
   display: inline-block;
@@ -149,7 +149,7 @@ canvas:active { cursor: grabbing; }
   opacity: 0.7;
   animation: bounce 2s ease-in-out infinite;
   cursor: pointer;
-  padding-bottom: 24px;
+  padding-bottom: 16px;
 }
 @keyframes bounce {
   0%,100% { transform: translateY(0); }
@@ -190,7 +190,7 @@ canvas:active { cursor: grabbing; }
   width: 50px;
   height: 2px;
   background: var(--green);
-  margin: 0 auto 40px;
+  margin: 0 auto 24px;
   opacity: 0.5;
   border-radius: 2px;
 }
@@ -198,19 +198,19 @@ canvas:active { cursor: grabbing; }
 /* ===== CHARACTERS ===== */
 .characters-section {
   background: linear-gradient(180deg, #e8e2d8 0%, #f5f2ed 8%, var(--cream) 100%);
-  padding: 70px 24px 80px;
+  padding: 36px 24px 40px;
 }
 .char-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
   max-width: 1000px;
   margin: 0 auto;
 }
 .char-card {
   background: #fff;
   border-radius: var(--radius-md);
-  padding: 18px 14px 16px;
+  padding: 12px 10px 12px;
   box-shadow: 0 2px 16px rgba(74,54,40,0.07);
   transition: transform 0.3s, box-shadow 0.3s;
   text-align: center;
@@ -251,7 +251,7 @@ canvas:active { cursor: grabbing; }
   opacity: 1;
 }
 .char-card .char-name {
-  margin-top: 12px;
+  margin-top: 8px;
   font-size: 1rem;
   font-weight: 700;
   color: var(--brown);
@@ -265,26 +265,26 @@ canvas:active { cursor: grabbing; }
 
 /* ===== HOW IT WORKS ===== */
 .how-section {
-  padding: 70px 24px;
+  padding: 36px 24px;
   background: var(--cream);
 }
 .steps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   max-width: 800px;
   margin: 0 auto;
 }
 .step-card {
   text-align: center;
-  padding: 32px 20px;
+  padding: 24px 16px;
   background: #fff;
   border-radius: var(--radius-lg);
   box-shadow: 0 2px 20px rgba(74,54,40,0.06);
 }
 .step-emoji {
-  font-size: 3rem;
-  margin-bottom: 16px;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 .step-num {
   display: inline-block;
@@ -311,25 +311,25 @@ canvas:active { cursor: grabbing; }
 
 /* ===== ORDER SECTION ===== */
 .order-section {
-  padding: 70px 24px;
+  padding: 36px 24px;
   text-align: center;
   background: linear-gradient(180deg, var(--cream) 0%, #f0ece5 100%);
 }
 .order-price {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 900;
   color: var(--green-bright);
-  margin: 20px 0 8px;
+  margin: 12px 0 6px;
 }
 .order-price-note {
   font-size: 0.9rem;
   color: var(--text-mid);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 /* ===== COUNTDOWN ===== */
 .countdown-section {
-  padding: 50px 24px;
+  padding: 32px 24px;
   text-align: center;
   background: var(--brown);
   color: #fff;
@@ -337,7 +337,7 @@ canvas:active { cursor: grabbing; }
 .countdown-section h2 {
   font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   color: #e8e2d8;
 }
 .countdown {
@@ -349,8 +349,8 @@ canvas:active { cursor: grabbing; }
 .cd-block {
   background: rgba(255,255,255,0.1);
   border-radius: var(--radius-sm);
-  padding: 16px 20px;
-  min-width: 80px;
+  padding: 12px 16px;
+  min-width: 70px;
 }
 .cd-num {
   font-size: 2rem;
@@ -467,7 +467,7 @@ canvas:active { cursor: grabbing; }
   background: var(--footer-bg);
   color: rgba(255,255,255,0.6);
   text-align: center;
-  padding: 32px 24px;
+  padding: 20px 24px;
   font-size: 0.8rem;
 }
 .site-footer a {
@@ -486,16 +486,22 @@ canvas:active { cursor: grabbing; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
-  .hero-content h1 { font-size: 2.4rem; }
-  .hero-content .subtitle { font-size: 1rem; }
-  .price-badge { font-size: 1.2rem; padding: 8px 28px; }
-  .char-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .steps-grid { grid-template-columns: 1fr; }
-  .order-price { font-size: 2.5rem; }
-  .countdown { gap: 10px; }
-  .cd-block { min-width: 65px; padding: 12px 14px; }
-  .cd-num { font-size: 1.5rem; }
-  .modal { padding: 28px 20px; }
+  #hero-3d { height: 40vh; }
+  .hero-content h1 { font-size: 2rem; }
+  .hero-content .subtitle { font-size: 0.95rem; }
+  .hero-content { padding: 16px 16px 20px; }
+  .price-badge { font-size: 1.1rem; padding: 8px 24px; }
+  .characters-section { padding: 24px 16px 28px; }
+  .char-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .how-section { padding: 24px 16px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 12px; }
+  .order-section { padding: 24px 16px; }
+  .order-price { font-size: 2.2rem; }
+  .countdown-section { padding: 24px 16px; }
+  .countdown { gap: 8px; }
+  .cd-block { min-width: 60px; padding: 10px 12px; }
+  .cd-num { font-size: 1.4rem; }
+  .modal { padding: 24px 16px; }
 }
 </style>
 </head>
