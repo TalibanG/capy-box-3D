@@ -515,6 +515,7 @@ canvas:active { cursor: grabbing; }
   transform: translateY(0);
 }
 </style>
+<script src="https://www.paypal.com/sdk/js?client-id=AQTFD2C4a1IYyqfMGs_C4liyon6__oc5P2OVTy0lex-H3UvvmWhu9qgy0ANV5kJMsZldG-3DPYalzTqX&currency=ILS"></script>
 </head>
 <body>
 
@@ -654,10 +655,19 @@ canvas:active { cursor: grabbing; }
         <input type="email" name="email" required placeholder="email@example.com">
       </div>
       <div class="form-group">
-        <label>&#128205; כתובת למשלוח</label>
-        <textarea name="address" required placeholder="עיר, רחוב, מספר בית, דירה"></textarea>
+        <label>&#128205; עיר</label>
+        <input type="text" name="city" required placeholder="עיר">
       </div>
-      <button type="submit" class="submit-btn">&#10004; שלח הזמנה</button>
+      <div class="form-group">
+        <label>&#128205; רחוב, מספר בית, דירה</label>
+        <input type="text" name="street" required placeholder="רחוב, מספר בית, דירה">
+      </div>
+      <div class="form-group">
+        <label>&#128221; הערות (לא חובה)</label>
+        <textarea name="notes" placeholder="הערות נוספות"></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="original-submit-btn">&#10004; שלח הזמנה</button>
+      <div id="paypal-button-container-box" style="margin-top:16px;"></div>
     </form>
   </div>
 </div>
@@ -702,20 +712,111 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 </script>
 
-<!-- ORDER HANDLER -->
+<!-- ORDER HANDLER + PAYPAL -->
 <script>
+function validateOrderForm() {
+  var form = document.querySelector('#order-modal form');
+  var valid = true;
+  // Clear previous errors
+  form.querySelectorAll('.field-error').forEach(function(el) { el.remove(); });
+  form.querySelectorAll('.form-group input, .form-group textarea').forEach(function(el) { el.style.borderColor = ''; });
+
+  var name = form.querySelector('input[name="name"]');
+  var phone = form.querySelector('input[name="phone"]');
+  var email = form.querySelector('input[name="email"]');
+  var city = form.querySelector('input[name="city"]');
+  var street = form.querySelector('input[name="street"]');
+  var firstError = null;
+
+  function showError(field, msg) {
+    field.style.borderColor = 'red';
+    var err = document.createElement('div');
+    err.className = 'field-error';
+    err.style.cssText = 'color:red;font-size:0.8rem;margin-top:4px;';
+    err.textContent = msg;
+    field.parentNode.appendChild(err);
+    if (!firstError) firstError = field;
+    valid = false;
+  }
+
+  if (!name.value.trim() || name.value.trim().split(/\s+/).length < 2) {
+    showError(name, 'יש להזין שם מלא (שם פרטי ושם משפחה)');
+  }
+  var phoneVal = phone.value.replace(/[-\s]/g, '');
+  if (!/^05\d{8}$/.test(phoneVal)) {
+    showError(phone, 'מספר טלפון חייב להתחיל ב-05 ולהכיל 10 ספרות');
+  }
+  if (!email.value.includes('@') || !email.value.includes('.')) {
+    showError(email, 'יש להזין כתובת אימייל תקינה');
+  }
+  if (!city.value.trim()) {
+    showError(city, 'יש להזין עיר');
+  }
+  if (!street.value.trim()) {
+    showError(street, 'יש להזין רחוב');
+  }
+
+  if (firstError) {
+    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
 function handleOrder(e) {
   e.preventDefault();
-  const form = e.target;
-  const data = new FormData(form);
-  const name = data.get('name');
-  alert('תודה ' + name + '! ההזמנה התקבלה 🎉\nניצור איתך קשר בקרוב.');
-  document.getElementById('order-modal').classList.remove('active');
-  form.reset();
+  if (!validateOrderForm()) return;
 }
+
 // Close modal on overlay click
 document.getElementById('order-modal').addEventListener('click', function(e) {
   if (e.target === this) this.classList.remove('active');
+});
+
+// PayPal Buttons
+paypal.Buttons({
+  createOrder: function(data, actions) {
+    if (!validateOrderForm()) {
+      return actions.reject();
+    }
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: '59.90',
+          currency_code: 'ILS'
+        }
+      }]
+    });
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      var form = document.querySelector('#order-modal form');
+      var formData = {
+        name: form.querySelector('input[name="name"]').value,
+        phone: form.querySelector('input[name="phone"]').value,
+        email: form.querySelector('input[name="email"]').value,
+        city: form.querySelector('input[name="city"]').value,
+        street: form.querySelector('input[name="street"]').value,
+        notes: form.querySelector('textarea[name="notes"]').value,
+        paypal_order_id: data.orderID,
+        _subject: 'הזמנת CapyBox חדשה (שולם via PayPal)'
+      };
+      fetch('https://formspree.io/f/xwkgpovw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      document.querySelector('#order-modal .modal').innerHTML =
+        '<div style="text-align:center;padding:40px 20px;font-size:1.3rem;line-height:2;">' +
+        '\u2705 התשלום התקבל! נשלח אליך אישור בקרוב \uD83D\uDC3E' +
+        '</div>';
+    });
+  },
+  onError: function(err) {
+    alert('שגיאה בתשלום. נסו שוב.');
+  }
+}).render('#paypal-button-container-box').then(function() {
+  var btn = document.getElementById('original-submit-btn');
+  if (btn) btn.style.display = 'none';
 });
 </script>
 
