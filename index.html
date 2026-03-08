@@ -706,10 +706,12 @@ document.getElementById('order-modal').addEventListener('click', function(e) {
 
 // PayPal Buttons
 paypal.Buttons({
+  onClick: function(data, actions) {
+    if (!validateOrderForm()) return actions.reject();
+    return actions.resolve();
+  },
   createOrder: function(data, actions) {
-    if (!validateOrderForm()) {
-      return actions.reject();
-    }
+    console.log('PayPal createOrder amount: 59.90 ILS');
     return actions.order.create({
       purchase_units: [{
         amount: {
