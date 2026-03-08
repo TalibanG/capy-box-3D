@@ -478,6 +478,7 @@ canvas:active { cursor: grabbing; }
 }
 </style>
 <script src="https://www.paypal.com/sdk/js?client-id=AXlngCiK3uhpf3KCUN64hpVB55sQwXm31496llOfjAlItAsqFKT68kD___pULpak09QBfE5R7qUePref&currency=ILS"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -779,6 +780,16 @@ paypal.Buttons({
             'PayPal Order ID: ' + data.orderID
         })
       });
+
+      // Email 3: EmailJS customer confirmation
+      emailjs.send("service_4pcxje5", "template_3nwxfc2", {
+        customer_name: nameVal,
+        customer_email: emailVal,
+        order_number: orderNum,
+        product_name: 'CapyBox – קופסת מסתורין',
+        price: '₪59.90',
+        address: address
+      }, "7OVQ6e_RpoaPjIGmX");
 
       document.querySelector('#order-modal .modal').innerHTML =
         '<div style="text-align:center;padding:40px 20px;font-size:1.3rem;line-height:2;">' +
