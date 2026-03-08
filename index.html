@@ -720,25 +720,68 @@ paypal.Buttons({
   },
   onApprove: function(data, actions) {
     return actions.order.capture().then(function(details) {
+      var orderNum = 'CAPY-' + String(Math.floor(100000 + Math.random() * 900000));
       var form = document.querySelector('#order-modal form');
-      var formData = {
-        name: form.querySelector('input[name="name"]').value,
-        phone: form.querySelector('input[name="phone"]').value,
-        email: form.querySelector('input[name="email"]').value,
-        city: form.querySelector('input[name="city"]').value,
-        street: form.querySelector('input[name="street"]').value,
-        notes: form.querySelector('textarea[name="notes"]').value,
-        paypal_order_id: data.orderID,
-        _subject: 'הזמנת CapyBox חדשה (שולם via PayPal)'
-      };
-      fetch('https://formspree.io/f/xwkgpovw', {
+      var nameVal   = form.querySelector('input[name="name"]').value;
+      var phoneVal  = form.querySelector('input[name="phone"]').value;
+      var emailVal  = form.querySelector('input[name="email"]').value;
+      var cityVal   = form.querySelector('input[name="city"]').value;
+      var streetVal = form.querySelector('input[name="street"]').value;
+      var notesVal  = form.querySelector('textarea[name="notes"]').value;
+      var address   = streetVal + ', ' + cityVal;
+      var endpoint  = 'https://formspree.io/f/xwkgpovw';
+
+      // Email 1: Customer confirmation
+      fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          _replyto: emailVal,
+          _subject: 'אישור הזמנה מ-Capy & Co 🐾 - ' + orderNum,
+          email: emailVal,
+          message: 'שלום ' + nameVal + '! 🐾\n\n' +
+            'תודה שהזמנת מ-Capy & Co!\n\n' +
+            'מספר הזמנה: ' + orderNum + '\n' +
+            'מוצר: CapyBox – קופסת מסתורין\n' +
+            'סה"כ: ₪59.90\n' +
+            'כתובת למשלוח: ' + address + '\n\n' +
+            'ההזמנה שלך בדרך אליך! משלוח תוך 5-7 ימי עסקים.\n' +
+            'לכל שאלה: support@capyco.shop\n\n' +
+            'תודה רבה! 💚\nצוות Capy & Co'
+        })
       });
+
+      // Email 2: Order notification to store owner
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'הזמנה חדשה! ' + orderNum,
+          order_number: orderNum,
+          name: nameVal,
+          phone: phoneVal,
+          email: emailVal,
+          address: address,
+          notes: notesVal,
+          product: 'CapyBox – קופסת מסתורין',
+          total: '₪59.90',
+          payment_id: data.orderID,
+          message: 'הזמנה חדשה התקבלה!\n\n' +
+            'מספר הזמנה: ' + orderNum + '\n' +
+            'שם: ' + nameVal + '\n' +
+            'טלפון: ' + phoneVal + '\n' +
+            'אימייל: ' + emailVal + '\n' +
+            'כתובת: ' + address + '\n' +
+            'הערות: ' + notesVal + '\n' +
+            'מוצר: CapyBox – קופסת מסתורין\n' +
+            'סה"כ: ₪59.90\n' +
+            'PayPal Order ID: ' + data.orderID
+        })
+      });
+
       document.querySelector('#order-modal .modal').innerHTML =
         '<div style="text-align:center;padding:40px 20px;font-size:1.3rem;line-height:2;">' +
-        '\u2705 התשלום התקבל! נשלח אליך אישור בקרוב \uD83D\uDC3E' +
+        '\u2705 התשלום התקבל!<br>מספר הזמנה: ' + orderNum + '<br>נשלח אליך אישור בקרוב \uD83D\uDC3E' +
         '</div>';
     });
   },
