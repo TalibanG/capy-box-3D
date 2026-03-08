@@ -327,42 +327,6 @@ canvas:active { cursor: grabbing; }
   margin-bottom: 20px;
 }
 
-/* ===== COUNTDOWN ===== */
-.countdown-section {
-  padding: 32px 24px;
-  text-align: center;
-  background: var(--brown);
-  color: #fff;
-}
-.countdown-section h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 14px;
-  color: #e8e2d8;
-}
-.countdown {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.cd-block {
-  background: rgba(255,255,255,0.1);
-  border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  min-width: 70px;
-}
-.cd-num {
-  font-size: 2rem;
-  font-weight: 800;
-}
-.cd-label {
-  font-size: 0.7rem;
-  font-weight: 500;
-  opacity: 0.7;
-  margin-top: 4px;
-}
-
 /* ===== MODAL ===== */
 .modal-overlay {
   display: none;
@@ -497,10 +461,6 @@ canvas:active { cursor: grabbing; }
   .steps-grid { grid-template-columns: 1fr; gap: 12px; }
   .order-section { padding: 24px 16px; }
   .order-price { font-size: 2.2rem; }
-  .countdown-section { padding: 24px 16px; }
-  .countdown { gap: 8px; }
-  .cd-block { min-width: 60px; padding: 10px 12px; }
-  .cd-num { font-size: 1.4rem; }
   .modal { padding: 24px 16px; }
 }
 
@@ -625,17 +585,6 @@ canvas:active { cursor: grabbing; }
   <button class="cta-btn" onclick="document.getElementById('order-modal').classList.add('active')">&#128230; הזמינו עכשיו</button>
 </section>
 
-<!-- COUNTDOWN -->
-<section class="countdown-section">
-  <h2>&#9203; המבצע נגמר בסוף החודש!</h2>
-  <div class="countdown" id="countdown">
-    <div class="cd-block"><div class="cd-num" id="cd-days">00</div><div class="cd-label">ימים</div></div>
-    <div class="cd-block"><div class="cd-num" id="cd-hours">00</div><div class="cd-label">שעות</div></div>
-    <div class="cd-block"><div class="cd-num" id="cd-mins">00</div><div class="cd-label">דקות</div></div>
-    <div class="cd-block"><div class="cd-num" id="cd-secs">00</div><div class="cd-label">שניות</div></div>
-  </div>
-</section>
-
 <!-- ORDER MODAL -->
 <div class="modal-overlay" id="order-modal">
   <div class="modal">
@@ -690,26 +639,6 @@ for(let i=0;i<12;i++){
     `animation-delay:${Math.random()*8}s;animation-duration:${5+Math.random()*5}s`;
   document.getElementById('hero-3d').appendChild(p);
 }
-</script>
-
-<!-- COUNTDOWN TIMER -->
-<script>
-function updateCountdown() {
-  const now = new Date();
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-  const diff = endOfMonth - now;
-  if (diff <= 0) return;
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
 </script>
 
 <!-- ORDER HANDLER + PAYPAL -->
@@ -907,7 +836,7 @@ ctrl.addEventListener('end',()=>{it=setTimeout(()=>ctrl.autoRotate=true,3000)});
 </script>
 
 <script>
-document.querySelectorAll('.characters-section, .how-section, .order-section, .countdown-section, .donation-banner').forEach(function(el) {
+document.querySelectorAll('.characters-section, .how-section, .order-section, .donation-banner').forEach(function(el) {
   el.classList.add('reveal');
 });
 var ro = new IntersectionObserver(function(entries) {
