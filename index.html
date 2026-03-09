@@ -478,7 +478,6 @@ canvas:active { cursor: grabbing; }
   transform: translateY(0);
 }
 </style>
-<script src="https://www.paypal.com/sdk/js?client-id=AXlngCiK3uhpf3KCUN64hpVB55sQwXm31496llOfjAlItAsqFKT68kD___pULpak09QBfE5R7qUePref&currency=ILS"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
@@ -615,6 +614,10 @@ canvas:active { cursor: grabbing; }
         <input type="text" name="city" required placeholder="עיר">
       </div>
       <div class="form-group">
+        <label>מיקוד 📮</label>
+        <input type="text" id="zip-input" placeholder="מיקוד" />
+      </div>
+      <div class="form-group">
         <label>&#128205; רחוב, מספר בית, דירה</label>
         <input type="text" name="street" required placeholder="רחוב, מספר בית, דירה">
       </div>
@@ -623,7 +626,9 @@ canvas:active { cursor: grabbing; }
         <textarea name="notes" placeholder="הערות נוספות"></textarea>
       </div>
       <button type="submit" class="submit-btn" id="original-submit-btn">&#10004; שלח הזמנה</button>
-      <div id="paypal-button-container-box" style="margin-top:16px;min-height:150px;"></div>
+      <div style="text-align:center; padding: 16px; background: #fff8e1; border-radius: 8px; color: #6b4226; font-size: 1rem;">
+        🔧 מערכת התשלום בתהליך עדכון — ניצור איתך קשר לאישור ההזמנה
+      </div>
     </form>
   </div>
 </div>
@@ -648,7 +653,7 @@ for(let i=0;i<12;i++){
 }
 </script>
 
-<!-- ORDER HANDLER + PAYPAL -->
+<!-- ORDER HANDLER -->
 <script>
 function validateOrderForm() {
   var form = document.querySelector('#order-modal form');
@@ -708,108 +713,6 @@ document.getElementById('order-modal').addEventListener('click', function(e) {
   if (e.target === this) this.classList.remove('active');
 });
 
-// PayPal Buttons
-paypal.Buttons({
-  onClick: function(data, actions) {
-    if (!validateOrderForm()) return actions.reject();
-    return actions.resolve();
-  },
-  createOrder: function(data, actions) {
-    console.log('PayPal createOrder amount: 59.90 ILS');
-    return actions.order.create({
-      purchase_units: [{
-        amount: {
-          value: '59.90',
-          currency_code: 'ILS'
-        }
-      }]
-    });
-  },
-  onApprove: function(data, actions) {
-    return actions.order.capture().then(function(details) {
-      var orderNum = 'CAPY-' + String(Math.floor(100000 + Math.random() * 900000));
-      var form = document.querySelector('#order-modal form');
-      var nameVal   = form.querySelector('input[name="name"]').value;
-      var phoneVal  = form.querySelector('input[name="phone"]').value;
-      var emailVal  = form.querySelector('input[name="email"]').value;
-      var cityVal   = form.querySelector('input[name="city"]').value;
-      var streetVal = form.querySelector('input[name="street"]').value;
-      var notesVal  = form.querySelector('textarea[name="notes"]').value;
-      var address   = streetVal + ', ' + cityVal;
-      var endpoint  = 'https://formspree.io/f/xwkgpovw';
-
-      // Email 1: Customer confirmation
-      fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _replyto: emailVal,
-          _subject: 'אישור הזמנה מ-Capy & Co 🐾 - ' + orderNum,
-          email: emailVal,
-          message: 'שלום ' + nameVal + '! 🐾\n\n' +
-            'תודה שהזמנת מ-Capy & Co!\n\n' +
-            'מספר הזמנה: ' + orderNum + '\n' +
-            'מוצר: CapyBox – קופסת מסתורין\n' +
-            'סה"כ: ₪59.90\n' +
-            'כתובת למשלוח: ' + address + '\n\n' +
-            'ההזמנה שלך בדרך אליך! משלוח תוך 7-14 ימי עסקים.\n' +
-            'לכל שאלה: support@capyco.shop\n\n' +
-            'תודה רבה! 💚\nצוות Capy & Co'
-        })
-      });
-
-      // Email 2: Order notification to store owner
-      fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _replyto: 'effy@capyco.shop',
-          _subject: 'הזמנה חדשה! ' + orderNum,
-          order_number: orderNum,
-          name: nameVal,
-          phone: phoneVal,
-          email: emailVal,
-          address: address,
-          notes: notesVal,
-          product: 'CapyBox – קופסת מסתורין',
-          total: '₪59.90',
-          payment_id: data.orderID,
-          message: 'הזמנה חדשה התקבלה!\n\n' +
-            'מספר הזמנה: ' + orderNum + '\n' +
-            'שם: ' + nameVal + '\n' +
-            'טלפון: ' + phoneVal + '\n' +
-            'אימייל: ' + emailVal + '\n' +
-            'כתובת: ' + address + '\n' +
-            'הערות: ' + notesVal + '\n' +
-            'מוצר: CapyBox – קופסת מסתורין\n' +
-            'סה"כ: ₪59.90\n' +
-            'PayPal Order ID: ' + data.orderID
-        })
-      });
-
-      // Email 3: EmailJS customer confirmation
-      emailjs.send("service_vr3w33f", "template_3nwxfc2", {
-        customer_name: nameVal,
-        customer_email: emailVal,
-        order_number: orderNum,
-        product_name: 'CapyBox – קופסת מסתורין',
-        price: '₪59.90',
-        address: address
-      }, "7OVQ6e_RpoaPjIGmX");
-
-      document.querySelector('#order-modal .modal').innerHTML =
-        '<div style="text-align:center;padding:40px 20px;font-size:1.3rem;line-height:2;">' +
-        '\u2705 התשלום התקבל!<br>מספר הזמנה: ' + orderNum + '<br>נשלח אליך אישור בקרוב \uD83D\uDC3E' +
-        '</div>';
-    });
-  },
-  onError: function(err) {
-    alert('שגיאה בתשלום. נסו שוב.');
-  }
-}).render('#paypal-button-container-box').then(function() {
-  var btn = document.getElementById('original-submit-btn');
-  if (btn) btn.style.display = 'none';
-});
 </script>
 
 <!-- THREE.JS -->
@@ -899,7 +802,7 @@ ctrl.addEventListener('end',()=>{it=setTimeout(()=>ctrl.autoRotate=true,3000)});
 </script>
 
 <script>
-document.querySelectorAll('.characters-section, .how-section, .order-section, .donation-banner').forEach(function(el) {
+document.querySelectorAll('.characters-section, .how-section, .order-section').forEach(function(el) {
   el.classList.add('reveal');
 });
 var ro = new IntersectionObserver(function(entries) {
