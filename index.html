@@ -274,7 +274,6 @@ canvas:active { cursor: grabbing; }
   gap: 20px;
   max-width: 800px;
   margin: 0 auto;
-  direction: ltr;
 }
 .step-card {
   text-align: center;
@@ -450,6 +449,23 @@ canvas:active { cursor: grabbing; }
   color: rgba(255,255,255,0.8);
   margin-bottom: 8px;
 }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.trust-strip {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b4226;
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
@@ -465,6 +481,13 @@ canvas:active { cursor: grabbing; }
   .order-section { padding: 24px 16px; }
   .order-price { font-size: 2.2rem; }
   .modal { padding: 24px 16px; }
+  .form-group input, .form-group textarea { font-size: 16px; }
+}
+@media (max-width: 390px) {
+  #hero-3d { height: 35vh; }
+  .hero-content h1 { font-size: 1.7rem; }
+  .price-badge { font-size: 1rem; padding: 6px 20px; }
+  .trust-strip { gap: 10px; font-size: 0.75rem; }
 }
 
 /* ===== SCROLL REVEAL ===== */
@@ -484,7 +507,7 @@ canvas:active { cursor: grabbing; }
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <a href="#" class="logo">Capy<span>Box</span> by Capy & Co</a>
+  <a href="/" class="logo">Capy<span>Box</span> by Capy & Co</a>
   <a href="https://capyco.shop" class="nav-link" target="_blank">capyco.shop &larr;</a>
 </nav>
 
@@ -586,6 +609,11 @@ canvas:active { cursor: grabbing; }
   <div class="order-price-note">משלוח חינם &middot; קופסת מסתורין עם דמות אקראית</div>
   <div style="max-width:380px;margin:14px auto 18px;padding:14px 20px;background:#f5f0e8;border:2px solid #6b4226;border-radius:14px;box-shadow:0 3px 12px rgba(107,66,38,0.15);font-size:1.05rem;font-weight:700;color:#6b4226;line-height:1.6;">&#127873; בנוסף לבובה — כל קופסה מגיעה עם הפתעה מיוחדת שלא נגלה &#129323;</div>
   <button class="cta-btn" onclick="document.getElementById('order-modal').classList.add('active')">&#128230; הזמינו עכשיו</button>
+  <div class="trust-strip">
+    <span>&#128274; הזמנה מאובטחת</span>
+    <span>&#128666; משלוח מהיר</span>
+    <span>&#128260; החזרה קלה</span>
+  </div>
 </section>
 
 <!-- ORDER MODAL -->
@@ -615,7 +643,7 @@ canvas:active { cursor: grabbing; }
       </div>
       <div class="form-group">
         <label>מיקוד 📮</label>
-        <input type="text" id="zip-input" placeholder="מיקוד" />
+        <input type="text" id="zip-input" name="zip" placeholder="מיקוד" />
       </div>
       <div class="form-group">
         <label>&#128205; רחוב, מספר בית, דירה</label>
@@ -636,8 +664,13 @@ canvas:active { cursor: grabbing; }
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-brand">Capy & Co &#129441;</div>
-  <p><a href="https://capyco.shop" target="_blank">capyco.shop</a></p>
-  <p style="margin-top:8px;">&copy; 2025 Capy & Co. כל הזכויות שמורות.</p>
+  <div class="footer-links">
+    <a href="#">מדיניות פרטיות</a>
+    <a href="#">תנאי שימוש</a>
+    <a href="#">מדיניות החזרות</a>
+  </div>
+  <p><a href="https://capyco.shop" target="_blank">capyco.shop</a> &middot; <a href="mailto:support@capyco.shop">support@capyco.shop</a></p>
+  <p style="margin-top:8px;">&copy; 2026 Capy & Co. כל הזכויות שמורות.</p>
 </footer>
 
 <!-- PARTICLES -->
